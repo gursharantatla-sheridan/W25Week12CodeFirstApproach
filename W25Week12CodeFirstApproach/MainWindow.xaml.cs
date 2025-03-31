@@ -48,5 +48,34 @@ namespace W25Week12CodeFirstApproach
         {
             LoadStudentsInDataGrid();
         }
+
+        private void btnFind_Click(object sender, RoutedEventArgs e)
+        {
+            int id = int.Parse(txtId.Text);
+            var std = db.Students.Find(id);
+
+            if (std != null)
+            {
+                txtName.Text = std.Name;
+                cmbStandard.SelectedValue = std.StandardId;
+            }
+            else
+            {
+                MessageBox.Show("Invalid ID. Please try again");
+            }
+        }
+
+        private void btnInsert_Click(object sender, RoutedEventArgs e)
+        {
+            Student std = new Student();
+            std.Name = txtName.Text;
+            std.StandardId = (int)cmbStandard.SelectedValue;
+
+            db.Students.Add(std);
+            db.SaveChanges();
+
+            LoadStudentsInDataGrid();
+            MessageBox.Show("New student added");
+        }
     }
 }
