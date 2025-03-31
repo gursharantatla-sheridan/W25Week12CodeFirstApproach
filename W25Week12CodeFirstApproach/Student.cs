@@ -12,5 +12,8 @@ namespace W25Week12CodeFirstApproach
         public int StudentId { get; set; }
         public string? Name { get; set; }
         public int? StandardId { get; set; }
+
+        // navigation property
+        public Standard? Standard { get; set; }
     }
 }
