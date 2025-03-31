@@ -16,9 +16,37 @@ namespace W25Week12CodeFirstApproach
     /// </summary>
     public partial class MainWindow : Window
     {
+        // instantiate the context class
+        SchoolContext db = new SchoolContext();
+
         public MainWindow()
         {
             InitializeComponent();
+
+            LoadStudentsInDataGrid();
+            LoadStandardsInCombobox();
+        }
+
+        private void LoadStudentsInDataGrid()
+        {
+            var students = (from s in db.Students
+                           select new { s.StudentId, s.Name, s.Standard.StandardName }).ToList();
+
+            grdStudents.ItemsSource = students;
+        }
+
+        private void LoadStandardsInCombobox()
+        {
+            var standards = db.Standards.ToList();
+
+            cmbStandard.ItemsSource = standards;
+            cmbStandard.DisplayMemberPath = "StandardName";
+            cmbStandard.SelectedValuePath = "StandardId";
+        }
+
+        private void btnLoadStudents_Click(object sender, RoutedEventArgs e)
+        {
+            LoadStudentsInDataGrid();
         }
     }
 }
