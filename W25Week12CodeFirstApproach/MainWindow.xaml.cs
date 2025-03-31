@@ -61,6 +61,8 @@ namespace W25Week12CodeFirstApproach
             }
             else
             {
+                txtName.Text = "";
+                cmbStandard.SelectedIndex = -1;
                 MessageBox.Show("Invalid ID. Please try again");
             }
         }
@@ -76,6 +78,45 @@ namespace W25Week12CodeFirstApproach
 
             LoadStudentsInDataGrid();
             MessageBox.Show("New student added");
+        }
+
+        private void btnUpdate_Click(object sender, RoutedEventArgs e)
+        {
+            int id = int.Parse(txtId.Text);
+            var std = db.Students.Find(id);
+
+            std.Name = txtName.Text;
+            std.StandardId = (int)cmbStandard.SelectedValue;
+
+            db.SaveChanges();
+
+            LoadStudentsInDataGrid();
+            MessageBox.Show("Student updated");
+        }
+
+        private void btnDelete_Click(object sender, RoutedEventArgs e)
+        {
+            int id = int.Parse(txtId.Text);
+            var std = db.Students.Find(id);
+
+            db.Students.Remove(std);
+            db.SaveChanges();
+
+            LoadStudentsInDataGrid();
+            MessageBox.Show("Student deleted");
+        }
+
+        private void btnSearch_Click(object sender, RoutedEventArgs e)
+        {
+            // query syntax
+            //var students = (from s in db.Students
+            //               where s.StudentName.Contains(txtName.Text)
+            //               select s).ToList();
+
+            // method syntax
+            var students = db.Students.Where(s => s.Name.Contains(txtName.Text)).ToList();
+
+            grdStudents.ItemsSource = students;
         }
     }
 }
